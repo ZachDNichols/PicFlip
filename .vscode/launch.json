@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug Main Process",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder}/node_modules/.bin/electron",
+        "args": ["."],
+        "stopOnEntry": false,
+        "cwd": "${workspaceFolder}",
+        "preLaunchTask": "npm: start",
+        "runtimeExecutable": null,
+        "runtimeArgs": ["--nolazy"],
+        "env": {
+          "NODE_ENV": "development"
+        },
+        "sourceMaps": true,
+        "outFiles": ["${workspaceFolder}/**/*.js"],
+        "windows": {
+          "program": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+        }
+      }
+    ]
+  }
