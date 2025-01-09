@@ -37,7 +37,8 @@ function addFiles(files) {
     for (const file of files) {
         if (!uploadedFiles.some(f => f.name === file.name && f.size === file.size)) {
             uploadedFiles.push(file);
-            createThumbnail(file);
+            window.electronApi.sendFilePath("file-dropped", file.path);
+            console.log("File path sent to main:", file.path);
         }
         else{
             errorText.innerHTML = "File already uploaded";
@@ -46,36 +47,5 @@ function addFiles(files) {
     }
     if (newFileAdded){
         displayFiles();
-    }
-}
-
-function createThumbnail(file) {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-        const thumbnail = document.createElement("div");
-        thumbnail.className = "thumbnail";
-
-        const img = document.createElement("img");
-        img.src = reader.result;
-        thumbnail.appendChild(img);
-
-        const removeBtn = document.createElement("button");
-        removeBtn.className = "remove-btn";
-        removeBtn.textContent = "X";
-        removeBtn.addEventListener("click", () => removeFile(file, thumbnail));
-        thumbnail.appendChild(removeBtn);
-
-        thumbnailContainer.appendChild(thumbnail);
-    };
-
-    reader.readAsDataURL(file);
-}
-
-function removeFile(file, thumbnail) {
-    const index = uploadedFiles.findIndex(f => f.name === file.name && f.size === file.size);
-    if (index > -1) {
-        uploadedFiles.splice(index, 1); // Remove file from array
-        thumbnail.remove(); // Remove thumbnail from UI
     }
 }
