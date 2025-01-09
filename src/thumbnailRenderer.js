@@ -2,15 +2,14 @@ const { ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-const handleFileDropped = (filePath, event) => {
-    console.log('File received: '+ filePath);
+const handleFileDropped = (fileName, fileContent) => {
+    console.log('File received: '+ fileName);
 };
 
 // Setup event listener
 const setupThumbnailListener = () => {
-    ipcMain.on('file-dropped', (event, filePath) => {
-        console.log('File received in main process:', filePath);
-        handleFileDropped(filePath, event);
+    ipcMain.on('file-content', (event, { fileName, fileContent }) => {
+        handleFileDropped(fileName, fileContent);
     });
 };
 

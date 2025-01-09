@@ -32,20 +32,25 @@ dropbox.addEventListener("click", () => {
 
 // Add files to the global array and update the list
 function addFiles(files) {
-    var newFileAdded = false;
-
     for (const file of files) {
         if (!uploadedFiles.some(f => f.name === file.name && f.size === file.size)) {
             uploadedFiles.push(file);
-            window.electronApi.sendFilePath("file-dropped", file.path);
-            console.log("File path sent to main:", file.path);
+
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                const fileContent = reader.result;
+                const fileName = file.name;
+
+                window.electronApi.sendFileContent(fileName, fileContent);
+                console.log("File path sent to main:", file);
+            }
+
+            reader.readAsDataURL(file);
         }
         else{
             errorText.innerHTML = "File already uploaded";
             errorText.style.display = "block";
         }
-    }
-    if (newFileAdded){
-        displayFiles();
     }
 }
